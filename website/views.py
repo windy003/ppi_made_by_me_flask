@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 from .models import Note
 from . import db
 import json
+from urllib.parse import unquote
+
 
 views = Blueprint('views', __name__)
 
@@ -11,15 +13,13 @@ views = Blueprint('views', __name__)
 @login_required
 def home():
     if request.method == 'POST': 
-        note = request.form.get('note')#Gets the note from the HTML 
-
-        if len(note) < 1:
-            flash('Note is too short!', category='error') 
-        else:
-            new_note = Note(data=note, user_id=current_user.id)  #providing the schema for the note 
-            db.session.add(new_note) #adding the note to the database 
-            db.session.commit()
-            flash('Note added!', category='success')
+        
+        note = request.data.decode('utf-8')
+        
+        new_note = Note(data=note, user_id=current_user.id)  #providing the schema for the note 
+        db.session.add(new_note) #adding the note to the database 
+        db.session.commit()
+        flash('Note added!', category='success')
 
     return render_template("home.html", user=current_user)
 

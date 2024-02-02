@@ -17,7 +17,7 @@
 
     <title>{% block title %}Home{% endblock %}</title>
   </head>
-  <body>
+  <body onload="document.getElementById('width').focus()">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button
         class="navbar-toggler"
@@ -57,6 +57,71 @@
       </button>
     </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+    <center>
+    <h1>PPI计算器</h1>
+   
+      <label for="width">屏幕宽度（像素）:</label>
+      <input type="string" id="width" name="width"><br>
+      <label for="height">屏幕高度（像素）:</label>
+      <input type="string" id="height" name="height"><br>
+      <label for="size">屏幕尺寸（英寸）:</label>
+      <input type="string" id="size" name="size" step="0.1"><br>
+      <label for="note_bz">备注信息:</label>
+      <input type="string" id="note_bz" name="note_bz" ><br>
+      <input type="button" value="计算PPI" id="提交" onclick="calculatePPI()"><br><br><br> 
+      
+      <p id="result"></p>
+      <br><br>
+
+      
+        <button type="submit-btn" class="btn btn-primary"  onclick="post_to()"
+        >添加这个收藏</button><br><br><br>
+    </center>
+
+
+
+    <script>
+      function calculatePPI() {
+          var width = +(document.getElementById('width').value);
+          var height = +(document.getElementById('height').value);
+          var size = +(document.getElementById('size').value);
+          var note_bz = document.getElementById('note_bz').value;
+      
+          var ppi = Math.sqrt(width * width + height * height) / size;
+
+          var result_jg = '&nbsp&nbsp宽度:' + width + 
+          '&nbsp&nbsp高度:'+ height + 
+          '&nbsp&nbspPPI: ' + ppi.toFixed(2) +
+          '&nbsp&nbsp备注:'+ note_bz ;
+
+
+
+          document.getElementById('result').innerHTML = result_jg;
+          
+          
+
+          result_jg_without_nbsp = "宽度:" + width + 
+          "高度:"+ height + 
+          'PPI: ' + ppi.toFixed(2) +
+          '备注:'+ note_bz ;
+
+
+
+      }
+
+
+      function post_to() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/', true);
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        var data = result_jg_without_nbsp ;
+        xhr.send(data);
+      }
+    </script>
+
+    
+
 
     <div class="container">{% block content %} {% endblock %}</div>
     <script
