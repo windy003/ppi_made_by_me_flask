@@ -21,3 +21,8 @@ python main.py
 ## Viewing The App
 
 Go to `http://127.0.0.1:5000`
+
+
+
+提示distutils报错:
+apt install python3-distutils
